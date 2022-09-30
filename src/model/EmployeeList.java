@@ -11,12 +11,12 @@ import java.util.ArrayList;
  * @author akshb
  */
 public class EmployeeList {
-    
+
     private ArrayList<Employee> EmployeeList;
-    
-    public EmployeeList(){
+
+    public EmployeeList() {
         this.EmployeeList = new ArrayList<>();
-        
+
     }
 
     public ArrayList<Employee> getEmployeeList() {
@@ -26,10 +26,14 @@ public class EmployeeList {
     public void setEmployeeList(ArrayList<Employee> EmployeeList) {
         this.EmployeeList = EmployeeList;
     }
-    
+
     @Override
     public String toString() {
         return "EmployeeList{" + "EmployeeList=" + EmployeeList + '}';
     }
-    
+
+    public void deleteEmployee(Employee selectedEmployee) {
+        this.EmployeeList.remove(selectedEmployee);
+    }
+
 }

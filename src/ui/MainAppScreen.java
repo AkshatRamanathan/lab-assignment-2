@@ -15,7 +15,6 @@ public class MainAppScreen extends javax.swing.JFrame {
     /**
      * Creates new form MainAppScreen
      */
-    
     EmployeeList allEmployeeList;
 
     public MainAppScreen() {

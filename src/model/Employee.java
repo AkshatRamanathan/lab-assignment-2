@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
  * @author akshb
  */
 public class Employee {
+
     private String Name;
     private long EmployeeID;
     private int Age;
@@ -111,5 +112,9 @@ public class Employee {
     public void setPhoneNumber(long PhoneNumber) {
         this.PhoneNumber = PhoneNumber;
     }
-    
+
+    @Override
+    public String toString() {
+        return this.Name;
+    }
 }
