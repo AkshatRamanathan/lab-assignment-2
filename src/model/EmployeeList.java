@@ -36,4 +36,9 @@ public class EmployeeList {
         this.EmployeeList.remove(selectedEmployee);
     }
 
+    public void updateEmployee(Employee newEmployee, Employee selectedEmployee) {
+        this.EmployeeList.remove(selectedEmployee);
+        this.EmployeeList.add(newEmployee);
+    }
+
 }

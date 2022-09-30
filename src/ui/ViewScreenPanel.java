@@ -4,6 +4,14 @@
  */
 package ui;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.util.Date;
+import java.util.regex.Pattern;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Employee;
@@ -20,9 +28,11 @@ public class ViewScreenPanel extends javax.swing.JPanel {
      */
     Employee newEmployee;
     EmployeeList allEmployeeList;
+    Image edited_image;
 
     public ViewScreenPanel(EmployeeList allEmployeeList) {
         this.allEmployeeList = allEmployeeList;
+        newEmployee = new Employee();
         initComponents();
         populateTable();
     }
@@ -43,7 +53,7 @@ public class ViewScreenPanel extends javax.swing.JPanel {
         idField = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        posTitleField = new javax.swing.JTextField();
+        positionField = new javax.swing.JTextField();
         updateEmployeeButton = new javax.swing.JButton();
         emailField = new javax.swing.JTextField();
         teamInfoField = new javax.swing.JTextField();
@@ -125,12 +135,18 @@ public class ViewScreenPanel extends javax.swing.JPanel {
 
         PhotoUrl.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         PhotoUrl.setForeground(new java.awt.Color(51, 153, 0));
+        PhotoUrl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         jLabel9.setText("Position Title");
 
         jLabel8.setText("Team Information");
 
         PhotoUploadButton.setText("Re-Upload");
+        PhotoUploadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PhotoUploadButtonActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Gender");
 
@@ -200,7 +216,7 @@ public class ViewScreenPanel extends javax.swing.JPanel {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(posTitleField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(positionField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(viewDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
@@ -235,7 +251,7 @@ public class ViewScreenPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(posTitleField, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(positionField, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(viewDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -294,8 +310,55 @@ public class ViewScreenPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_nameFieldActionPerformed
 
+    private static boolean isEmailValid(String email) {
+        Pattern EMAIL_REGEX = Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", Pattern.CASE_INSENSITIVE);
+        return EMAIL_REGEX.matcher(email).matches();
+    }
+
     private void updateEmployeeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateEmployeeButtonActionPerformed
         // TODO add your handling code here:
+        Employee selectedEmployee = null;
+        try {
+            int selectedIndex = EmployeeTable.getSelectedRow();
+            if (selectedIndex < 0) {
+                JOptionPane.showMessageDialog(this, "Please select a row to be deleted", "Error - No selection", JOptionPane.WARNING_MESSAGE);
+            } else {
+                DefaultTableModel model = (DefaultTableModel) EmployeeTable.getModel();
+                selectedEmployee = (Employee) model.getValueAt(selectedIndex, 0);
+                allEmployeeList.deleteEmployee(selectedEmployee);
+            }
+            newEmployee.setName(nameField.getText());
+            newEmployee.setEmployeeID(Long.parseLong(idField.getText()));
+            newEmployee.setAge(Integer.parseInt(ageField.getText()));
+            newEmployee.setGender(genderField.getText());
+            newEmployee.setLevel(levelField.getText());
+            newEmployee.setTeamInfo(teamInfoField.getText());
+            newEmployee.setPositionTitle(positionField.getText());
+            newEmployee.setPhoneNumber(Long.parseLong(contactField.getText()));
+            newEmployee.setStartDate((Date) datePicker.getDate());
+
+            newEmployee.setPic(new ImageIcon(edited_image));
+
+            if (isEmailValid(emailField.getText())) {
+                newEmployee.setEmail(emailField.getText());
+            } else {
+                throw new Exception();
+            }
+            if (newEmployee != null) {
+                JOptionPane.showMessageDialog(this, "Information is updated successfully.");
+                allEmployeeList.updateEmployee(newEmployee, selectedEmployee); //edit this
+                clearFields();
+                populateTable();
+            } else {
+                throw new Exception();
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Please re-enter required information correctly in the required format.", "Error - Incorrect input", JOptionPane.ERROR_MESSAGE);
+
+        }
+
+
     }//GEN-LAST:event_updateEmployeeButtonActionPerformed
 
     private void deleteEmployeeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteEmployeeButtonActionPerformed
@@ -310,6 +373,7 @@ public class ViewScreenPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Employee Information is deleted successfully.");
             populateTable();
         }
+        clearFields();
     }//GEN-LAST:event_deleteEmployeeButtonActionPerformed
 
     private void viewDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewDetailsActionPerformed
@@ -323,6 +387,25 @@ public class ViewScreenPanel extends javax.swing.JPanel {
             displayDetails(selectedEmployee);
         }
     }//GEN-LAST:event_viewDetailsActionPerformed
+
+    private void PhotoUploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PhotoUploadButtonActionPerformed
+        // TODO add your handling code here:
+        JFileChooser file = new JFileChooser();
+        if (file.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            try {
+                BufferedImage img = ImageIO.read(file.getSelectedFile());
+                edited_image = img.getScaledInstance(60, 80, Image.SCALE_SMOOTH);
+                if (edited_image != null) {
+//                    PhotoUrl.setIcon(null); //???
+                    PhotoUrl.setIcon(new ImageIcon(edited_image)); //???
+
+                } else {
+                    throw new Exception();
+                }
+            } catch (Exception ex) {
+            }
+        }
+    }//GEN-LAST:event_PhotoUploadButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -350,7 +433,7 @@ public class ViewScreenPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField levelField;
     private javax.swing.JTextField nameField;
-    private javax.swing.JTextField posTitleField;
+    private javax.swing.JTextField positionField;
     private javax.swing.JTextField teamInfoField;
     private javax.swing.JButton updateEmployeeButton;
     private javax.swing.JButton viewDetails;
@@ -376,13 +459,27 @@ public class ViewScreenPanel extends javax.swing.JPanel {
         ageField.setText(String.valueOf(selectedEmployee.getAge()));
         genderField.setText(selectedEmployee.getGender());
         teamInfoField.setText(selectedEmployee.getTeamInfo());
-        posTitleField.setText(selectedEmployee.getPositionTitle());
+        positionField.setText(selectedEmployee.getPositionTitle());
         contactField.setText(Long.toString(selectedEmployee.getPhoneNumber()));
         emailField.setText(selectedEmployee.getEmail());
         levelField.setText(selectedEmployee.getLevel());
         PhotoUrl.setIcon(selectedEmployee.getPic());
         datePicker.setDate(selectedEmployee.getStartDate());
 
+    }
+
+    private void clearFields() {
+        nameField.setText("");
+        idField.setText("");
+        ageField.setText(String.valueOf(("")));
+        genderField.setText("");
+        teamInfoField.setText("");
+        positionField.setText("");
+        contactField.setText("");
+        emailField.setText("");
+        levelField.setText("");
+        PhotoUrl.setIcon(null);
+        datePicker.setDate(null);
     }
 
 }
