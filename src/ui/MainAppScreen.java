@@ -4,6 +4,8 @@
  */
 package ui;
 
+import model.EmployeeList;
+
 /**
  *
  * @author akshb
@@ -13,7 +15,12 @@ public class MainAppScreen extends javax.swing.JFrame {
     /**
      * Creates new form MainAppScreen
      */
+    
+    EmployeeList allEmployeeList;
+
     public MainAppScreen() {
+        allEmployeeList = new EmployeeList();
+//        EmployeeInfo = new Employee();
         initComponents();
     }
 
@@ -110,13 +117,13 @@ public class MainAppScreen extends javax.swing.JFrame {
 
     private void createEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createEmployeeActionPerformed
         // TODO add your handling code here:
-        CreateEmployeePanel createPanel = new CreateEmployeePanel();
+        CreateEmployeePanel createPanel = new CreateEmployeePanel(allEmployeeList);
         jSplitPane1.setBottomComponent(createPanel);
     }//GEN-LAST:event_createEmployeeActionPerformed
 
     private void listEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listEmployeeActionPerformed
         // TODO add your handling code here:
-        ViewScreenPanel viewScreenPanel = new ViewScreenPanel();
+        ViewScreenPanel viewScreenPanel = new ViewScreenPanel(); //add allEmployeeList here
         jSplitPane1.setBottomComponent(viewScreenPanel);
     }//GEN-LAST:event_listEmployeeActionPerformed
 

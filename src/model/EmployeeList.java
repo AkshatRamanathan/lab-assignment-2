@@ -14,8 +14,8 @@ public class EmployeeList {
     
     private ArrayList<Employee> EmployeeList;
     
-    EmployeeList(){
-        this.EmployeeList = new ArrayList<Employee>();
+    public EmployeeList(){
+        this.EmployeeList = new ArrayList<>();
         
     }
 
@@ -25,6 +25,11 @@ public class EmployeeList {
 
     public void setEmployeeList(ArrayList<Employee> EmployeeList) {
         this.EmployeeList = EmployeeList;
+    }
+
+    @Override
+    public String toString() {
+        return "EmployeeList{" + "EmployeeList=" + EmployeeList + '}';
     }
     
 }

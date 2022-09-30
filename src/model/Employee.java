@@ -112,5 +112,10 @@ public class Employee {
         this.PhoneNumber = PhoneNumber;
     }
 
+    @Override
+    public String toString() {
+        return "Employee{" + "Name=" + Name + ", EmployeeID=" + EmployeeID + ", Age=" + Age + ", Gender=" + Gender + ", StartDate=" + StartDate + ", Level=" + Level + ", TeamInfo=" + TeamInfo + ", PositionTitle=" + PositionTitle + ", Email=" + Email + ", Pic=" + Pic + ", PhoneNumber=" + PhoneNumber + '}';
+    }
+
     
 }
