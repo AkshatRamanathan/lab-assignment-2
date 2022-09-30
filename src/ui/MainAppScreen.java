@@ -101,7 +101,7 @@ public class MainAppScreen extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jSplitPane1)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -110,10 +110,14 @@ public class MainAppScreen extends javax.swing.JFrame {
 
     private void createEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createEmployeeActionPerformed
         // TODO add your handling code here:
+        CreateEmployeePanel createPanel = new CreateEmployeePanel();
+        jSplitPane1.setBottomComponent(createPanel);
     }//GEN-LAST:event_createEmployeeActionPerformed
 
     private void listEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listEmployeeActionPerformed
         // TODO add your handling code here:
+        ViewScreenPanel viewScreenPanel = new ViewScreenPanel();
+        jSplitPane1.setBottomComponent(viewScreenPanel);
     }//GEN-LAST:event_listEmployeeActionPerformed
 
     /**
