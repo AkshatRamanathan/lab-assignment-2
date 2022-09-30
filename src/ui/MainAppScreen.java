@@ -20,7 +20,6 @@ public class MainAppScreen extends javax.swing.JFrame {
 
     public MainAppScreen() {
         allEmployeeList = new EmployeeList();
-//        EmployeeInfo = new Employee();
         initComponents();
     }
 
@@ -123,7 +122,7 @@ public class MainAppScreen extends javax.swing.JFrame {
 
     private void listEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listEmployeeActionPerformed
         // TODO add your handling code here:
-        ViewScreenPanel viewScreenPanel = new ViewScreenPanel(); //add allEmployeeList here
+        ViewScreenPanel viewScreenPanel = new ViewScreenPanel(allEmployeeList);
         jSplitPane1.setBottomComponent(viewScreenPanel);
     }//GEN-LAST:event_listEmployeeActionPerformed
 

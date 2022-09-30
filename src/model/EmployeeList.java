@@ -26,7 +26,7 @@ public class EmployeeList {
     public void setEmployeeList(ArrayList<Employee> EmployeeList) {
         this.EmployeeList = EmployeeList;
     }
-
+    
     @Override
     public String toString() {
         return "EmployeeList{" + "EmployeeList=" + EmployeeList + '}';

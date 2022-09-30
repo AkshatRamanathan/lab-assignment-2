@@ -26,9 +26,9 @@ public class CreateEmployeePanel extends javax.swing.JPanel {
      */
     Employee newEmployee;
     EmployeeList allEmployeeList;
+    Image edited_image;
 
     public CreateEmployeePanel(EmployeeList allEmployeeList) {
-        this.newEmployee = new Employee();
         this.allEmployeeList = allEmployeeList;
         initComponents();
     }
@@ -250,7 +250,9 @@ public class CreateEmployeePanel extends javax.swing.JPanel {
     }
 
     private void saveEmployeeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveEmployeeButtonActionPerformed
-        ArrayList<Employee> EmployeeList = new ArrayList<>();
+        ArrayList<Employee> EmployeeList = this.allEmployeeList.getEmployeeList();
+        this.newEmployee = new Employee();
+
         try {
             newEmployee.setName(nameField.getText());
             newEmployee.setEmployeeID(Long.parseLong(idField.getText()));
@@ -262,6 +264,7 @@ public class CreateEmployeePanel extends javax.swing.JPanel {
             newEmployee.setPhoneNumber(Long.parseLong(contactField.getText()));
             // newEmployee.setStartDate(getText());
             // work on date field and valudation
+            newEmployee.setPic(new ImageIcon(edited_image));
 
             if (isEmailValid(emailField.getText())) {
                 newEmployee.setEmail(emailField.getText());
@@ -269,15 +272,12 @@ public class CreateEmployeePanel extends javax.swing.JPanel {
                 throw new Exception();
             }
             JOptionPane.showMessageDialog(this, "Information is saved successfully.");
+            EmployeeList.add(newEmployee);
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Please re-enter required information correctly.", "Error - Incorrect input", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please re-enter required information correctly in the required format.", "Error - Incorrect input", JOptionPane.ERROR_MESSAGE);
 
         }
-
-        EmployeeList.add(newEmployee);
-        allEmployeeList.setEmployeeList(EmployeeList);
-        System.out.println(newEmployee.toString());
         System.out.println(allEmployeeList.toString());
 
     }//GEN-LAST:event_saveEmployeeButtonActionPerformed
@@ -288,10 +288,12 @@ public class CreateEmployeePanel extends javax.swing.JPanel {
         if (file.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             try {
                 BufferedImage img = ImageIO.read(file.getSelectedFile());
-                Image edited_image = img.getScaledInstance(60, 80, Image.SCALE_SMOOTH);
+                edited_image = img.getScaledInstance(60, 80, Image.SCALE_SMOOTH);
                 if (edited_image != null) {
                     PhotoUrl.setText(file.getSelectedFile().getAbsolutePath());
-                    newEmployee.setPic(new ImageIcon(edited_image));
+                }
+                else{
+                    throw new Exception();
                 }
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Please upload image correctly correctly.", "Error - Incorrect image", JOptionPane.ERROR_MESSAGE);

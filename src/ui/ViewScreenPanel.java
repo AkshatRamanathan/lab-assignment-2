@@ -4,6 +4,9 @@
  */
 package ui;
 
+import model.Employee;
+import model.EmployeeList;
+
 /**
  *
  * @author akshb
@@ -13,7 +16,11 @@ public class ViewScreenPanel extends javax.swing.JPanel {
     /**
      * Creates new form ViewScreenPanel
      */
-    public ViewScreenPanel() {
+    Employee newEmployee;
+    EmployeeList allEmployeeList;
+
+    public ViewScreenPanel(EmployeeList allEmployeeList) {
+        this.allEmployeeList = allEmployeeList;
         initComponents();
     }
 
