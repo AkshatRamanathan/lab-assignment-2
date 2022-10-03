@@ -321,7 +321,8 @@ public class ViewScreenPanel extends javax.swing.JPanel {
         try {
             int selectedIndex = EmployeeTable.getSelectedRow();
             if (selectedIndex < 0) {
-                JOptionPane.showMessageDialog(this, "Please select a row to be deleted", "Error - No selection", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please select a row to be update", "Error - No selection", JOptionPane.WARNING_MESSAGE);
+                return;
             } else {
                 DefaultTableModel model = (DefaultTableModel) EmployeeTable.getModel();
                 selectedEmployee = (Employee) model.getValueAt(selectedIndex, 0);
@@ -337,7 +338,7 @@ public class ViewScreenPanel extends javax.swing.JPanel {
             newEmployee.setPhoneNumber(Long.parseLong(contactField.getText()));
             newEmployee.setStartDate((Date) datePicker.getDate());
 
-            newEmployee.setPic(new ImageIcon(edited_image));
+            newEmployee.setPic((ImageIcon) PhotoUrl.getIcon());
 
             if (isEmailValid(emailField.getText())) {
                 newEmployee.setEmail(emailField.getText());
