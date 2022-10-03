@@ -9,11 +9,12 @@ import java.awt.image.BufferedImage;
 import java.util.Date;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import model.Employee;
 import model.EmployeeList;
 
@@ -74,6 +75,7 @@ public class ViewScreenPanel extends javax.swing.JPanel {
         deleteEmployeeButton = new javax.swing.JButton();
         viewDetails = new javax.swing.JButton();
         datePicker = new com.toedter.calendar.JDateChooser();
+        filterField = new javax.swing.JTextField();
 
         EmployeeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -173,6 +175,13 @@ public class ViewScreenPanel extends javax.swing.JPanel {
             }
         });
 
+        filterField.setText("Enter query to filter table");
+        filterField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                filterFieldKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -180,8 +189,8 @@ public class ViewScreenPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 997, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(updateEmployeeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
@@ -236,15 +245,17 @@ public class ViewScreenPanel extends javax.swing.JPanel {
                                             .addComponent(emailField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(levelField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(PhotoUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 997, Short.MAX_VALUE))
+                                        .addComponent(PhotoUrl, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(filterField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(9, 9, 9)
+                .addComponent(filterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -302,7 +313,7 @@ public class ViewScreenPanel extends javax.swing.JPanel {
                     .addComponent(PhotoUploadButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(updateEmployeeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45))
+                .addGap(14, 14, 14))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -408,6 +419,12 @@ public class ViewScreenPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_PhotoUploadButtonActionPerformed
 
+    private void filterFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filterFieldKeyReleased
+        // TODO add your handling code here:
+        String query = filterField.getText().toLowerCase();
+        filter(query);
+    }//GEN-LAST:event_filterFieldKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable EmployeeTable;
@@ -418,6 +435,7 @@ public class ViewScreenPanel extends javax.swing.JPanel {
     private com.toedter.calendar.JDateChooser datePicker;
     private javax.swing.JButton deleteEmployeeButton;
     private javax.swing.JTextField emailField;
+    private javax.swing.JTextField filterField;
     private javax.swing.JTextField genderField;
     private javax.swing.JTextField idField;
     private javax.swing.JLabel jLabel10;
@@ -481,6 +499,13 @@ public class ViewScreenPanel extends javax.swing.JPanel {
         levelField.setText("");
         PhotoUrl.setIcon(null);
         datePicker.setDate(null);
+    }
+
+    private void filter(String query) {
+        TableRowSorter<DefaultTableModel> rowSorter;
+        rowSorter = new TableRowSorter<>((DefaultTableModel) EmployeeTable.getModel());
+        EmployeeTable.setRowSorter(rowSorter);
+        rowSorter.setRowFilter(RowFilter.regexFilter(query));
     }
 
 }
